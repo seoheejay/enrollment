@@ -287,6 +287,7 @@ GET /api/enrollments?studentId=student-1
 | createdAt | LocalDateTime | 신청 시각 |
 
 ### 상태 전이 다이어그램
+```mermaid
 graph TD
     subgraph 강의 상태 전이
         DRAFT --> OPEN --> CLOSED
@@ -297,6 +298,7 @@ graph TD
         PENDING -->|기간 제한 없음| CANCELLED
         CONFIRMED -->|7일 이내만| CANCELLED
     end
+```
 
 ---
 
