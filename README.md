@@ -118,9 +118,19 @@ Optional<Course> findByIdWithLock(Long id);
 ### 3. 도메인별 패키지 구조
 
 계층형(controller/service/repository) 대신 도메인별로 패키지를 구성했습니다.
-domain/
-├── course/        # 강의 관련 모든 클래스
-└── enrollment/    # 수강 신청 관련 모든 클래스
+```text
+src/main/java/com/example/enrollment/domain/
+├── course/
+│   ├── Course.java
+│   ├── CourseController.java
+│   ├── CourseRepository.java
+│   └── CourseService.java
+└── enrollment/
+    ├── Enrollment.java
+    ├── EnrollmentController.java
+    ├── EnrollmentRepository.java
+    └── EnrollmentService.java
+```
 
 기능이 추가될 때 관련 파일이 한 곳에 모여 있어 수정 범위 파악이 쉽습니다.
 
@@ -277,13 +287,16 @@ GET /api/enrollments?studentId=student-1
 | createdAt | LocalDateTime | 신청 시각 |
 
 ### 상태 전이 다이어그램
-[ 강의 ]
-DRAFT ──→ OPEN ──→ CLOSED
-[ 수강 신청 ]
-PENDING ──→ CONFIRMED
-│              │
-└──────────────┴──→ CANCELLED
-(기간 제한 없음)     (7일 이내만)
+graph TD
+    subgraph 강의 상태 전이
+        DRAFT --> OPEN --> CLOSED
+    end
+
+    subgraph 수강 신청 상태 전이
+        PENDING --> CONFIRMED
+        PENDING -->|기간 제한 없음| CANCELLED
+        CONFIRMED -->|7일 이내만| CANCELLED
+    end
 
 ---
 
